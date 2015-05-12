@@ -8,8 +8,12 @@ var client = new Client('irc.freenode.net', 'sudobot', {
 var split = require('split2');
 var through = require('through2');
 
-var spawn = require('ssh', [ 'omnidoor.local', 'pm2 logs --raw doorjam' ]);
-spawn.stdout.pipe(split())
+var spawn = require('spawn');
+var ps = spawn('ssh', [ 'omnidoor.local', 'pm2 logs --raw doorjam' ]);
+ps.on('exit', process.exit);
+ps.stderr.pipe(process.stderr);
+ps.stdout.pipe(process.stdout);
+ps.stdout.pipe(split())
     .pipe(through(function (buf, enc, next) {
         var line = buf.toString();
         if (/^Access granted/.test(line)) {
