@@ -1,0 +1,30 @@
+{
+  "name": "sudobot",
+  "version": "1.0.0",
+  "description": "sudoroom status bot",
+  "main": "bot.js",
+  "dependencies": {
+    "irc": "^0.3.12",
+    "split2": "^0.2.1",
+    "through2": "^0.6.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sudoroom/sudobot.git"
+  },
+  "keywords": [
+    "irc",
+    "bot",
+    "sudoroom"
+  ],
+  "author": "substack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sudoroom/sudobot/issues"
+  },
+  "homepage": "https://github.com/sudoroom/sudobot#readme"
+}
