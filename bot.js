@@ -8,7 +8,7 @@ var client = new Client('irc.freenode.net', 'sudobot', {
 var split = require('split2');
 var through = require('through2');
 
-var spawn = require('spawn');
+var spawn = require('child_process').spawn;
 var ps = spawn('ssh', [ 'omnidoor.local', 'pm2 logs --raw doorjam' ]);
 ps.on('exit', process.exit);
 ps.stderr.pipe(process.stderr);
