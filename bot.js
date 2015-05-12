@@ -19,5 +19,6 @@ ps.stdout.pipe(split())
         if (/^Access granted/.test(line)) {
             client.say('#sudoroom', 'somebody swiped into the building');
         }
+        next();
     }))
 ;
