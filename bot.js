@@ -24,6 +24,7 @@ function ssh () {
     
     ps.on('exit', function () {
         clearTimeout(timeout);
+        timeout = null;
         setTimeout(ssh, 5000);
     });
     ps.stderr.pipe(process.stderr);
