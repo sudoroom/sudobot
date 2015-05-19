@@ -18,7 +18,7 @@ function ssh () {
     connected = true;
     
     var spawn = require('child_process').spawn;
-    var ps = spawn('ssh', [ 'root@omnidoor.local', 'pm2 logs --raw doorjam' ]);
+    var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy logs doorjam' ]);
     ps.on('exit', function () {
         connected = false;
         setTimeout(ssh, 5000);
