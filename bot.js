@@ -12,8 +12,8 @@ var lastmsg = 0;
 var failing = {};
 var timeout = null;
 
-function say (msg) {
-    client.say(msg);
+function say (room, msg) {
+    client.say(room, msg);
 }
 
 ssh();
