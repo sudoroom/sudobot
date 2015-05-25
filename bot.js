@@ -31,6 +31,7 @@ function ssh () {
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(process.stdout);
     ps.stdout.pipe(split()).pipe(through(write));
+    ps.stderr.pipe(split()).pipe(through(write));
     
     function write (buf, enc, next) {
         if (failing.ssh && !timeout) {
