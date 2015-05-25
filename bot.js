@@ -49,7 +49,7 @@ function ssh () {
             failing.logs = false;
             say('#sudoroom', 'DOOR EVENT: READY');
         }
-        else if (/^Error:/i.test(line)) {
+        else if (/^(Error:|SERIAL ERROR)/i.test(line)) {
             failing.logs = false;
             say('#sudoroom', 'DOOR EVENT: ' + line);
         }
