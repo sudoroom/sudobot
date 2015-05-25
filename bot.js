@@ -12,8 +12,8 @@ var lastmsg = 0;
 var failing = {};
 var timeout = null;
 
-function say (room, msg) {
-    client.say(room, msg);
+function say (msg) {
+    client.say('#sudoroom', msg);
 }
 
 ssh();
@@ -36,7 +36,7 @@ function ssh () {
     function write (buf, enc, next) {
         if (failing.ssh && !timeout) {
             timeout = setTimeout(function () {
-                say('#sudoroom', 'DOOR EVENT: omnidoor ssh connection established');
+                say('DOOR EVENT: omnidoor ssh connection established');
                 failing.ssh = false;
                 timeout = null;
             }, 5000)
@@ -45,19 +45,19 @@ function ssh () {
         var line = buf.toString();
         if (/^Access granted/i.test(line)) {
             failing.logs = false;
-            say('#sudoroom', 'DOOR EVENT: somebody swiped into the building');
+            say('DOOR EVENT: somebody swiped into the building');
         }
         else if (/^Everything initialized and ready/i.test(line)) {
             failing.logs = false;
-            say('#sudoroom', 'DOOR EVENT: READY');
+            say('DOOR EVENT: READY');
         }
         else if (/^(Error:|SERIAL ERROR)/i.test(line)) {
             failing.logs = false;
-            say('#sudoroom', 'DOOR EVENT: ' + line);
+            say('DOOR EVENT: ' + line);
         }
         else if (/^Can not find log files,/.test(line)) {
             if (!failing.logs) {
-                say('#sudoroom', 'DOOR EVENT: log read failure');
+                say('DOOR EVENT: log read failure');
             }
             failing.logs = true;
         }
