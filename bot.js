@@ -11,6 +11,7 @@ var through = require('through2');
 var lastmsg = 0;
 var failing = {};
 var timeout = null;
+var last = {};
 
 function say (msg) {
     client.say('#sudoroom', msg);
@@ -45,7 +46,10 @@ function ssh () {
         var line = buf.toString();
         if (/^Access granted/i.test(line)) {
             failing.logs = false;
-            say('DOOR EVENT: somebody swiped into the building');
+            if (!last.swipe || Date.now() - last.swipe > 1000*15) {
+                say('DOOR EVENT: somebody swiped into the building');
+                last.swipe = Date.now();
+            }
         }
         else if (/^Everything initialized and ready/i.test(line)) {
             failing.logs = false;
