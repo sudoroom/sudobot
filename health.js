@@ -12,6 +12,6 @@ function check () {
             msg.charging = m[1] !== 'Discharging';
             msg.percent = Number(m[2]);
         }
-        console.log(msg);
+        console.log(JSON.stringify(msg));
     });
 }
