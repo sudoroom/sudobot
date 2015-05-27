@@ -102,8 +102,6 @@ function health () {
         try { var msg = JSON.parse(line) }
         catch (err) { return console.error(err) }
         
-        console.log('health=', msg);
-        
         checked.health = Date.now();
         if (!msg.charging) {
             say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
