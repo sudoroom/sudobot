@@ -28,7 +28,7 @@ function say (msg) {
 }
 
 ssh();
-heatlh();
+health();
 
 function ssh () {
     var spawn = require('child_process').spawn;
