@@ -16,8 +16,8 @@ var checked = { health: Date.now() };
 
 setInterval(function () {
     var elapsed = Date.now() - checked.health;
-    if (elapsed > 1000 * 60 * 3) {
-        var mins = Math.floor(elapsed / 1000 / 60);
+    var mins = Math.floor(elapsed / 1000 / 60);
+    if (mins > 3) {
         say('NO RESPONSE FROM OMNIDOOR IN ' + mins + ' MINUTES');
         failing.healthping = true;
     }
@@ -101,6 +101,8 @@ function health () {
         var line = buf.toString();
         try { var msg = JSON.parse(line) }
         catch (err) { return console.error(err) }
+        
+        console.log('health=', msg);
         
         checked.health = Date.now();
         if (!msg.charging) {
