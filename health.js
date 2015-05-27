@@ -9,7 +9,7 @@ function check () {
         var m = /^Battery \d+: (Charging|Discharging), (\d+)%/.exec(stdout);
         var msg = {};
         if (m) {
-            msg.charging = m[1] === 'Charging';
+            msg.charging = m[1] !== 'Discharging';
             msg.percent = Number(m[2]);
         }
         console.log(msg);

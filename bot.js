@@ -12,12 +12,23 @@ var lastmsg = 0;
 var failing = {};
 var timeout = null;
 var last = {};
+var checked = { health: Date.now() };
+
+setInterval(function () {
+    var elapsed = Date.now() - checked.health;
+    if (elapsed > 1000 * 60 * 3) {
+        var mins = Math.floor(elapsed / 1000 / 60);
+        say('NO RESPONSE FROM OMNIDOOR IN ' + mins + ' MINUTES');
+        failing.healthping = true;
+    }
+}, 1000 * 60 * 5);
 
 function say (msg) {
     client.say('#sudoroom', msg);
 }
 
 ssh();
+heatlh();
 
 function ssh () {
     var spawn = require('child_process').spawn;
@@ -69,6 +80,36 @@ function ssh () {
             }
             failing.logs = true;
         }
+        next();
+    }
+}
+
+function health () {
+    var spawn = require('child_process').spawn;
+    var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorhealth' ]);
+    
+    ps.on('exit', function () {
+        clearTimeout(timeout);
+        timeout = null;
+        setTimeout(health, 5000);
+    });
+    ps.stdout.pipe(process.stdout);
+    ps.stderr.pipe(process.stderr);
+    ps.stdout.pipe(split()).pipe(through(write));
+    
+    function write (buf, enc, next) {
+        var line = buf.toString();
+        try { var msg = JSON.parse(line) }
+        catch (err) { return console.error(err) }
+        
+        checked.health = Date.now();
+        if (!msg.charging) {
+            say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
+        }
+        if (failing.healthping) {
+            say('OMNIDOOR HEALTH CONNECTION RESTORED');
+        }
+        failing.healthping = false;
         next();
     }
 }
