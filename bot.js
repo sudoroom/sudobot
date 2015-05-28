@@ -94,9 +94,10 @@ function health () {
         setTimeout(health, 5000);
     });
     ps.stdout.pipe(process.stdout);
-    ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(split()).pipe(through(write));
-    ps.stderr.pipe(split()).pipe(through(write));
+    ps.stdout.on('data', function (buf) {
+        console.log('buf=', buf);
+    });
     
     function write (buf, enc, next) {
         var line = buf.toString();
