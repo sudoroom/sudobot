@@ -95,9 +95,6 @@ function health () {
     });
     ps.stdout.pipe(process.stdout);
     ps.stdout.pipe(split()).pipe(through(write));
-    ps.stdout.on('data', function (buf) {
-        console.log('buf=', buf);
-    });
     
     function write (buf, enc, next) {
         var line = buf.toString();
