@@ -97,7 +97,7 @@ function health () {
     
     function write (buf, enc, next) {
         var line = buf.toString();
-        console.log(line);
+        console.log('health: ' + line);
         try { var msg = JSON.parse(line) }
         catch (err) {
             console.error(err);
