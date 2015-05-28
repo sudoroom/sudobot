@@ -99,10 +99,13 @@ function health () {
     
     function write (buf, enc, next) {
         var line = buf.toString();
+        console.log('health line=', line);
         try { var msg = JSON.parse(line) }
         catch (err) { return console.error(err) }
         
         checked.health = Date.now();
+        console.log('health checked at', checked.health);
+        
         if (!msg.charging) {
             say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
         }
