@@ -96,6 +96,7 @@ function health () {
     ps.stdout.pipe(process.stdout);
     ps.stderr.pipe(process.stderr);
     ps.stdout.pipe(split()).pipe(through(write));
+    ps.stderr.pipe(split()).pipe(through(write));
     
     function write (buf, enc, next) {
         var line = buf.toString();
