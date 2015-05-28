@@ -102,7 +102,10 @@ function health () {
         var line = buf.toString();
         console.log('health line=', line);
         try { var msg = JSON.parse(line) }
-        catch (err) { return console.error(err) }
+        catch (err) {
+            console.error(err);
+            return next();
+        }
         
         checked.health = Date.now();
         console.log('health checked at', checked.health);
