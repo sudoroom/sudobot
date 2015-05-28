@@ -7,6 +7,7 @@ var client = new Client('irc.freenode.net', 'sudobot', {
 
 var split = require('split2');
 var through = require('through2');
+var spawn = require('child_process').spawn;
 
 var lastmsg = 0;
 var failing = {};
@@ -31,9 +32,7 @@ ssh();
 health();
 
 function ssh () {
-    var spawn = require('child_process').spawn;
     var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorjam' ]);
-    
     ps.on('exit', function () {
         clearTimeout(timeout);
         timeout = null;
@@ -85,20 +84,20 @@ function ssh () {
 }
 
 function health () {
-    var spawn = require('child_process').spawn;
+    console.log('SSH HEALTH');
     var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorhealth' ]);
     
     ps.on('exit', function () {
+        console.log('health log EXIT');
         clearTimeout(timeout);
         timeout = null;
         setTimeout(health, 5000);
     });
-    ps.stdout.pipe(process.stdout);
     ps.stdout.pipe(split()).pipe(through(write));
     
     function write (buf, enc, next) {
         var line = buf.toString();
-        console.log('health line=', line);
+        console.log(line);
         try { var msg = JSON.parse(line) }
         catch (err) {
             console.error(err);
