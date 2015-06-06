@@ -107,8 +107,15 @@ function health () {
         checked.health = Date.now();
         console.log('health checked at', checked.health);
         
-        if (!msg.charging) {
+        if (!msg.charging && (!last.discharge
+        || Date.now() - last.discharge > 1000*60*3)) {
             say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
+            last.discharge = Date.now();
+            failing.charging = true;
+        }
+        if (msg.charging && failing.charging) {
+            say('OMNIDOOR LAPTOP AC POWER RESTORED');
+            failing.charging = false;
         }
         if (failing.healthping) {
             say('OMNIDOOR HEALTH CONNECTION RESTORED');
