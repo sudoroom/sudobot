@@ -19,6 +19,9 @@ client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
         var ps = spawn('espeak', []);
         ps.stdin.end(message.replace(/^!say\s+/, ''));
+    } else if (/^!SAY\s+/.test(message)) {
+        var ps = spawn('espeak', []);
+        ps.stdin.end(message.replace(/^!SAY\s+/, '').toUpperCase().replace(/\s+|$/g, '! '));
     }
 });
 
