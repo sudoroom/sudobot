@@ -15,6 +15,13 @@ var timeout = null;
 var last = {};
 var checked = { health: Date.now() };
 
+client.addListener('message#sudoroom', function (from, message) {
+    if (/^!say\s+/.test(message)) {
+        var ps = spawn('espeak', []);
+        ps.stdin.end(message.replace(/^!say\s+/, ''));
+    }
+});
+
 setInterval(function () {
     var elapsed = Date.now() - checked.health;
     var mins = Math.floor(elapsed / 1000 / 60);
