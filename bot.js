@@ -114,7 +114,7 @@ function health () {
         checked.health = Date.now();
         console.log('health checked at', checked.health);
         
-        if (!msg.charging && (!last.discharge
+        if (msg.charging === false && (!last.discharge
         || Date.now() - last.discharge > 1000*60*3)) {
             say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
             last.discharge = Date.now();
