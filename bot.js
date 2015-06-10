@@ -106,6 +106,12 @@ function ssh () {
                 say('CRITICAL ARDUINO VOLTAGE: ' + health.voltage);
                 last.criticalVoltage = Date.now();
             }
+            if (health.sinceVoltage > 1000 * 60 * 2
+            && Date.now() - last.sinceVoltage >= 1000*60*10) {
+                var mins = Math.floor(sinceVoltage / 1000 / 60);
+                say('NO ARDUINO VOLTAGE REPORTED IN ' + mins + ' MINUTES');
+                last.sinceVoltage = Date.now();
+            }
         }
         next();
     }
