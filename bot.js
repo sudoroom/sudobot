@@ -14,7 +14,6 @@ var lastmsg = 0;
 var failing = {};
 var timeout = null;
 var last = {};
-var checked = { health: Date.now() };
 
 client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
@@ -32,15 +31,6 @@ client.addListener('message#sudoroom', function (from, message) {
     }
 });
 
-setInterval(function () {
-    var elapsed = Date.now() - checked.health;
-    var mins = Math.floor(elapsed / 1000 / 60);
-    if (mins > 3) {
-        //say('NO RESPONSE FROM OMNIDOOR IN ' + mins + ' MINUTES');
-        failing.healthping = true;
-    }
-}, 1000 * 60 * 5);
-
 function say (msg) {
     client.say('#sudoroom', msg);
 }
@@ -48,7 +38,6 @@ function say (msg) {
 var prev = { ssh: null, health: null };
 
 ssh();
-health();
 
 function ssh () {
     var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorjam' ]);
@@ -106,48 +95,6 @@ function ssh () {
             }
             failing.logs = true;
         }
-        next();
-    }
-}
-
-function health () {
-    console.log('SSH HEALTH');
-    var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorhealth' ]);
-    
-    ps.on('exit', function () {
-        console.log('health log EXIT');
-        clearTimeout(timeout);
-        timeout = null;
-        setTimeout(health, 5000);
-    });
-    ps.stdout.pipe(split()).pipe(through(write));
-    
-    function write (buf, enc, next) {
-        var line = buf.toString();
-        console.log('health: ' + line);
-        try { var msg = JSON.parse(line) }
-        catch (err) {
-            console.error(err);
-            return next();
-        }
-        
-        checked.health = Date.now();
-        console.log('health checked at', checked.health);
-        
-        if (msg.charging === false && (!last.discharge
-        || Date.now() - last.discharge > 1000*60*3)) {
-            say('OMNIDOOR LAPTOP IS DISCHARGING: ' + msg.percent + '% REMAINS');
-            last.discharge = Date.now();
-            failing.charging = true;
-        }
-        if (msg.charging && failing.charging) {
-            say('OMNIDOOR LAPTOP AC POWER RESTORED');
-            failing.charging = false;
-        }
-        if (failing.healthping) {
-            say('OMNIDOOR HEALTH CONNECTION RESTORED');
-        }
-        failing.healthping = false;
         next();
     }
 }
