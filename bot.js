@@ -80,6 +80,7 @@ function ssh () {
         else if (/^Everything initialized and ready/i.test(line)) {
             failing.logs = false;
             failing.serial = false;
+            failing.magstripe = false;
             say('DOOR EVENT: READY');
         }
         else if (/^(Error:|SERIAL ERROR)/i.test(line)) {
@@ -88,6 +89,13 @@ function ssh () {
                 say('DOOR EVENT: ' + line);
             }
             failing.serial = true;
+        }
+        else if (/^(Error:|MAGSTRIPE ERROR)/i.test(line)) {
+            failing.logs = false;
+            if (!failing.magstripe) {
+                say('DOOR EVENT: ' + line);
+            }
+            failing.magstripe = true;
         }
         else if (/^Can not find log files,/.test(line)) {
             if (!failing.logs) {
