@@ -4,6 +4,7 @@ var Client = require('irc').Client;
 var client = new Client('irc.freenode.net', 'sudobot', {
     channels: [ '#sudoroom' ]
 });
+var minimist = require('minimist');
 
 var split = require('split2');
 var through = require('through2');
@@ -17,8 +18,17 @@ var checked = { health: Date.now() };
 
 client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
-        var ps = spawn('espeak', []);
-        ps.stdin.end(message.replace(/^!say\s+/, ''));
+        var argv = minimist(message.split(/\s+/).slice(1));
+        var args = [];
+        if (argv.a) args.push('-a', argv.a);
+        if (argv.s) args.push('-s', argv.s);
+        if (argv.v) args.push('-v', argv.v);
+        if (argv.p) args.push('-p', argv.p);
+        if (argv.k) args.push('-k', argv.k);
+        if (!argv.s) args.push('-s', 100); // default speed
+        
+        var ps = spawn('espeak', args);
+        ps.stdin.end(argv._.join(' '));
     }
 });
 

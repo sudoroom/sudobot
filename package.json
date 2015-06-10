@@ -5,6 +5,7 @@
   "main": "bot.js",
   "dependencies": {
     "irc": "^0.3.12",
+    "minimist": "^1.1.1",
     "split2": "^0.2.1",
     "through2": "^0.6.5"
   },
