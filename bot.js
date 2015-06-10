@@ -64,7 +64,7 @@ function ssh () {
         
         var line = buf.toString();
         var m;
-        if (/^#ANNOUNCE/.test(line) && (m = /"([^"]+)"/)) {
+        if (/^#ANNOUNCE/.test(line) && (m = /"([^"]+)"/.exec(line))) {
             failing.logs = false;
             if (!last.swipe || Date.now() - last.swipe > 1000*15) {
                 say('DOOR EVENT: ' + m[1] + ' swiped into the building');
