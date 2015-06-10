@@ -35,6 +35,8 @@ function say (msg) {
     client.say('#sudoroom', msg);
 }
 
+var prev = { ssh: null, health: null };
+
 ssh();
 health();
 
@@ -61,7 +63,15 @@ function ssh () {
         }
         
         var line = buf.toString();
-        if (/^Access granted/i.test(line)) {
+        var m;
+        if (/^#ANNOUNCE/.test(line) && (m = /"([^"]+)"/)) {
+            failing.logs = false;
+            if (!last.swipe || Date.now() - last.swipe > 1000*15) {
+                say('DOOR EVENT: ' + m[1] + ' swiped into the building');
+                last.swipe = Date.now();
+            }
+        }
+        else if (/^Access granted/i.test(line) && !/^#ANNOUNCE/.test(prev)) {
             failing.logs = false;
             if (!last.swipe || Date.now() - last.swipe > 1000*15) {
                 say('DOOR EVENT: somebody swiped into the building');
