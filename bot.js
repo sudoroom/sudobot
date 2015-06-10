@@ -26,7 +26,7 @@ setInterval(function () {
     var elapsed = Date.now() - checked.health;
     var mins = Math.floor(elapsed / 1000 / 60);
     if (mins > 3) {
-        say('NO RESPONSE FROM OMNIDOOR IN ' + mins + ' MINUTES');
+        //say('NO RESPONSE FROM OMNIDOOR IN ' + mins + ' MINUTES');
         failing.healthping = true;
     }
 }, 1000 * 60 * 5);
