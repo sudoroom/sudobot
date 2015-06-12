@@ -41,7 +41,7 @@ client.addListener('message#sudoroom', function (from, message) {
     } else if(/^!fsay\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
 
-        var ps = spawn('aoss', ['flite', '-voice', '/opt/voices/cmu_us_clb.flitevox']);
+        var ps = spawn('aoss', ['flite', '-voice', '/opt/voices/cmu_us_slt.flitevox']);
         ps.stdin.end(argv._.join(' '));
     }
 });
