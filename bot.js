@@ -28,6 +28,11 @@ client.addListener('message#sudoroom', function (from, message) {
         
         var ps = spawn('espeak', args);
         ps.stdin.end(argv._.join(' '));
+    } else if(/^!ssay\s+/.test(message)) {
+        var argv = minimist(message.split(/\s+/).slice(1));
+
+        var ps = spawn('flite ', ['-voice', '/opt/voices/cmu_us_awb.flitevox']);
+        ps.stdin.end(argv._.join(' '));
     }
 });
 
