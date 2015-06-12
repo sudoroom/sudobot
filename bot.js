@@ -19,7 +19,12 @@ client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
         var args = [];
-        if (argv.a) args.push('-a', argv.a);
+        if (argv.a) {
+            args.push('-a', argv.a);
+        } else {
+            args.push('-a', '50');
+        }
+
         if (argv.s) args.push('-s', argv.s);
         if (argv.v) args.push('-v', argv.v);
         if (argv.p) args.push('-p', argv.p);
