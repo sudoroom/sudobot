@@ -38,6 +38,11 @@ client.addListener('message#sudoroom', function (from, message) {
 
         var ps = spawn('aoss', ['flite', '-voice', '/opt/voices/cmu_us_awb.flitevox']);
         ps.stdin.end(argv._.join(' '));
+    } else if(/^!fsay\s+/.test(message)) {
+        var argv = minimist(message.split(/\s+/).slice(1));
+
+        var ps = spawn('aoss', ['flite', '-voice', '/opt/voices/cmu_us_clb.flitevox']);
+        ps.stdin.end(argv._.join(' '));
     }
 });
 
