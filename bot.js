@@ -34,8 +34,11 @@ client.addListener('message#sudoroom', function (from, message) {
         if (argv.k) args.push('-k', argv.k);
         if (!argv.s) args.push('-s', 100); // default speed
         
-        var ps = spawn('espeak', args);
+        args.unshift('pi@100.64.64.27', 'espeak ');
+        args.push('-w /tmp/out.wav --stdin && aplay /tmp/out.wav');
+        var ps = spawn('ssh', args);
         ps.stdin.end(argv._.join(' '));
+        ps.stderr.pipe(process.stdout); ps.stdout.pipe(process.stdout)
     } else if(/^!ssay\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
 
