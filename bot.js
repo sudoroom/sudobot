@@ -22,17 +22,27 @@ client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
         var args = [];
-        if (argv.a) {
-            args.push('-a', argv.a);
+        if (argv.a) args.push('-a', argv.a);
+
+        if (argv.k) {
+            args.push('-k', argv.k);
         } else {
-            args.push('-a', '50');
+            args.push('-k20');
         }
 
-        if (argv.s) args.push('-s', argv.s);
-        if (argv.v) args.push('-v', argv.v);
+        if (argv.v) {
+            args.push('-v', argv.v);
+        } else {
+            args.push('-ven+f3');
+        }
+
+        if (argv.s) {
+            args.push('-s', argv.s);
+        } else {
+            args.push('-s 87');
+        }
+
         if (argv.p) args.push('-p', argv.p);
-        if (argv.k) args.push('-k', argv.k);
-        if (!argv.s) args.push('-s', 100); // default speed
         
         args.unshift('pi@100.64.64.27', 'espeak ');
         args.push('-w /tmp/out.wav --stdin && aplay /tmp/out.wav');
