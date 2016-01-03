@@ -74,7 +74,7 @@ var prev = { ssh: null, health: null };
 ssh();
 
 function ssh () {
-    var ps = spawn('ssh', [ 'root@omnidoor.local', 'psy log doorjam' ]);
+    var ps = spawn('ssh', [ 'root@100.64.64.11', 'psy log doorjam' ]);
     ps.on('exit', function () {
         clearTimeout(timeout);
         timeout = null;
