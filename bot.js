@@ -44,7 +44,7 @@ client.addListener('message#sudoroom', function (from, message) {
 
         if (argv.p) args.push('-p', argv.p);
         
-        args.unshift('pi@100.64.64.27', 'espeak ');
+        args.unshift('pi@100.64.64.27', 'bin/mainscreenturnon; espeak ');
         args.push('-w /tmp/out.wav --stdin && aplay /tmp/out.wav');
         var ps = spawn('ssh', args);
         ps.stdin.end(argv._.join(' '));
@@ -62,6 +62,9 @@ client.addListener('message#sudoroom', function (from, message) {
     } else if (/^!print\s+/.test(message) && serial.isOpen()) {
         var txt = message.replace(/^print\s+/, '')
         serial.write(txt + '\r\n')
+    }
+    if (/sudoroom_BigTV/.test(message)) {
+      spawn('ssh', ['pi@100.64.64.27', 'bin/mainscreenturnon']);
     }
 });
 
