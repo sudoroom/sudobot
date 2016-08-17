@@ -84,6 +84,12 @@ function say (msg) {
     client.say('#sudoroom', msg);
 }
 
+function currentHour() {
+    var timeNow = new Date();
+    var hour = timeNow.getHours();
+    return hour;
+}
+
 var prev = { ssh: null, health: null };
 
 ssh();
@@ -122,7 +128,12 @@ function ssh () {
         else if (/^Access granted/i.test(line) && !/^#ANNOUNCE/.test(prev)) {
             failing.logs = false;
             if (!last.swipe || Date.now() - last.swipe > 1000*15) {
-                say('DOOR EVENT: somebody swiped into the building');
+                if (currentHour() < 11) {
+                    say('!say DOOR EVENT: somebody swiped into the building');
+                }
+                else {
+                    say('DOOR EVENT: somebody swiped into the building');
+                }
                 last.swipe = Date.now();
             }
         }
