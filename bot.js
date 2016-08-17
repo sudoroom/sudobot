@@ -143,7 +143,7 @@ function ssh () {
         else if (/^health/.test(line)) {
             try { var health = JSON.parse(line.replace(/^health\s+/, '')) }
             catch (err) { return next() }
-            if ((isNaN(health.voltage) || health.voltage < 13.5)
+            if ((isNaN(health.voltage) || health.voltage < 13.0)
             && health.sinceMotor > 1000*10
             && health.voltage >= 0
             && (!last.criticalVoltage
