@@ -22,27 +22,39 @@ client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
         var args = [];
-        if (argv.a) args.push('-a', argv.a);
+        // amplitude
+        if (argv.a) {
+          var amp = parseInt(argv.a);
+          if(amp) args.push('-a', amp);
+        }
 
+        // Indicate capital letters with: 1=sound, 2=the word "capitals", higher values = a pitch increase (try -k20).
+        var k = 20;
         if (argv.k) {
-            args.push('-k', argv.k);
-        } else {
-            args.push('-k20');
+          k = parseInt(argv.k) || k;
         }
 
+        args.push('-k', k);
+
+        var voice = "en+f3";
         if (argv.v) {
-            args.push('-v', argv.v);
-        } else {
-            args.push('-ven+f3');
+          var m = args.v.match(/[\w\+_-]+/);
+          if(m)
+            voice = m.pop();
         }
 
+        var s = 87;
         if (argv.s) {
-            args.push('-s', argv.s);
-        } else {
-            args.push('-s 87');
+          s = parseInt(args.s) || s;
         }
 
-        if (argv.p) args.push('-p', argv.p);
+        args.push('-s', s);
+
+        if (argv.p) {
+          var p = parseInt(args.p);
+          if(p)
+            args.push('-p', p);
+        }
         
         args.unshift('pi@100.64.64.27', 'bin/mainscreenturnon; espeak ');
         args.push('-w /tmp/out.wav --stdin && aplay /tmp/out.wav');
