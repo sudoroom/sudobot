@@ -13,10 +13,10 @@ var split = require('split2');
 var through = require('through2');
 var spawn = require('child_process').spawn;
 
-var lastmsg = 0;
 var failing = {};
 var timeout = null;
 var last = {};
+var attempts = 0;
 
 client.addListener('message#sudoroom', function (from, message) {
     if (/^!say\s+/.test(message)) {
@@ -97,6 +97,8 @@ ssh();
 function ssh () {
     var ps = spawn('ssh', [ 'root@100.64.64.11', 'psy log doorjam' ]);
     ps.on('exit', function () {
+        if (!attempts) say('DOOR EVENT: omnidoor ssh connection FAILED!!!!');
+        attempts += 1
         clearTimeout(timeout);
         timeout = null;
         setTimeout(ssh, 5000);
@@ -110,6 +112,7 @@ function ssh () {
     function write (buf, enc, next) {
         if (failing.ssh && !timeout) {
             timeout = setTimeout(function () {
+                attempts = 0
                 say('DOOR EVENT: omnidoor ssh connection established');
                 failing.ssh = false;
                 timeout = null;
