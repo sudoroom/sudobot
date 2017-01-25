@@ -13,7 +13,6 @@ var split = require('split2');
 var through = require('through2');
 var spawn = require('child_process').spawn;
 
-var lastmsg = 0;
 var failing = {};
 var timeout = null;
 var last = {};
@@ -97,9 +96,10 @@ ssh();
 function ssh () {
     var ps = spawn('ssh', [ 'root@100.64.64.11', 'psy log doorjam' ]);
     ps.on('exit', function () {
+        say('DOOR EVENT: omnidoor ssh connection FAILED!!!!');
         clearTimeout(timeout);
         timeout = null;
-        setTimeout(ssh, 5000);
+        setTimeout(ssh, 300000);
         failing.ssh = true;
     });
     ps.stderr.pipe(process.stderr);
