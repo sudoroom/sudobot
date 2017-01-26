@@ -2,7 +2,7 @@
 
 var Client = require('irc').Client;
 var client = new Client('irc.freenode.net', 'sudobot', {
-    channels: [ '#sudoroom-test' ],
+    channels: [ '#sudoroom' ],
     autoConnect: false
 });
 var minimist = require('minimist');
@@ -81,7 +81,7 @@ client.addListener('message#sudoroom', function (from, message) {
 });
 
 function say (msg) {
-    client.say('#sudoroom-test', msg);
+    client.say('#sudoroom', msg);
 }
 
 function currentHour() {
