@@ -2,7 +2,8 @@
 
 var Client = require('irc').Client;
 var client = new Client('irc.freenode.net', 'sudobot', {
-    channels: [ '#sudoroom' ]
+    channels: [ '#sudoroom-test' ],
+    autoConnect: false
 });
 var minimist = require('minimist');
 
@@ -54,7 +55,7 @@ client.addListener('message#sudoroom', function (from, message) {
           if(p)
             args.push('-p', p);
         }
-        
+
         args.unshift('pi@100.64.64.27', 'bin/mainscreenturnon; espeak ');
         args.push('-w /tmp/out.wav --stdin && aplay /tmp/out.wav');
         var ps = spawn('ssh', args);
@@ -80,7 +81,7 @@ client.addListener('message#sudoroom', function (from, message) {
 });
 
 function say (msg) {
-    client.say('#sudoroom', msg);
+    client.say('#sudoroom-test', msg);
 }
 
 function currentHour() {
@@ -91,12 +92,11 @@ function currentHour() {
 
 var prev = { ssh: null, health: null };
 
-ssh();
+client.connect(5, function () { ssh(); })
 
 function ssh () {
     var ps = spawn('ssh', [ 'root@100.64.64.11', 'psy log doorjam' ]);
     ps.on('exit', function () {
-        say('DOOR EVENT: omnidoor ssh connection FAILED!!!!');
         clearTimeout(timeout);
         timeout = null;
         setTimeout(ssh, 300000);
@@ -106,17 +106,20 @@ function ssh () {
     ps.stdout.pipe(process.stdout);
     ps.stdout.pipe(split()).pipe(through(write));
     ps.stderr.pipe(split()).pipe(through(write));
-    
+
     function write (buf, enc, next) {
         if (failing.ssh && !timeout) {
             timeout = setTimeout(function () {
-                say('DOOR EVENT: omnidoor ssh connection established');
+           	say('DOOR EVENT: omnidoor ssh connection established');
                 failing.ssh = false;
                 timeout = null;
             }, 5000)
         }
-        
+
         var line = buf.toString();
+	if (line.indexOf('Could not resolve') > -1) {
+           say('DOOR EVENT: omnidoor ssh connection FAILED!!!!');
+	}
         var m;
         if (/^#ANNOUNCE/.test(line) && (m = /"([^"]+)"/.exec(line))) {
             failing.logs = false;
