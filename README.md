@@ -45,7 +45,7 @@ node bot.js
 ```
 
 If this doesn't work, you may have found a bug. In that case, please
-[https://github.com/sudoroom/sudobot/issues](see our issues) and open
+[see our issues](https://github.com/sudoroom/sudobot/issues) and open
 a new one if the bug you've found is not already documented.
 
 ## Deployment
