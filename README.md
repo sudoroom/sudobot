@@ -14,7 +14,7 @@ for notes on how to deploy the project on a live system.
 sudoboot is known to run in production on the nodejs provided by [chris
 lea](https://launchpad.net/~chris-lea)'s
 [node.js PPA](https://launchpad.net/~chris-lea/+archive/ubuntu/node.js)
-(specifically version 0.10.37-1chl1~trusty1).  However, you might not be
+(specifically version `0.10.37-1chl1~trusty1`).  However, you might not be
 running Ubuntu, so an alternative way to get the right node.js runtime
 is suggested: using [Node Version Manager](http://nvm.sh).
 
