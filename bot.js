@@ -7,9 +7,6 @@ var client = new Client('irc.freenode.net', 'sudobot', {
 });
 var minimist = require('minimist');
 
-var SerialPort = require('serialport').SerialPort
-var serial = new SerialPort('/dev/ttyS0', { baud: 9600 })
-
 var split = require('split2');
 var through = require('through2');
 var spawn = require('child_process').spawn;
@@ -71,9 +68,6 @@ client.addListener('message#sudoroom', function (from, message) {
 
         var ps = spawn('aoss', ['flite', '-voice', '/opt/voices/cmu_us_slt.flitevox']);
         ps.stdin.end(argv._.join(' '));
-    } else if (/^!print\s+/.test(message) && serial.isOpen()) {
-        var txt = message.replace(/^print\s+/, '')
-        serial.write(txt + '\r\n')
     }
     if (/sudoroom_BigTV/.test(message)) {
       spawn('ssh', ['pi@100.64.64.27', 'bin/mainscreenturnon']);
