@@ -15,7 +15,15 @@ var failing = {};
 var timeout = null;
 var last = {};
 
+function say (msg) {
+    client.say('#sudoroom', msg);
+}
+
 client.addListener('message#sudoroom', function (from, message) {
+    if (/^With.our.IRC.ad.service.you.can.reach.a.global.audience\s+/.test(message)) {
+        // this does not work :) say('/kick ' + from);
+        client.send('KICK', '#sudoroom', from);
+    }
     if (/^!say\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
         var args = [];
@@ -73,10 +81,6 @@ client.addListener('message#sudoroom', function (from, message) {
       spawn('ssh', ['pi@100.64.64.27', 'bin/mainscreenturnon']);
     }
 });
-
-function say (msg) {
-    client.say('#sudoroom', msg);
-}
 
 function currentHour() {
     var timeNow = new Date();
