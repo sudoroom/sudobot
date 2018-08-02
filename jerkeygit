@@ -1,0 +1,1 @@
+git -c "user.name=jerkey" -c "user.email=jerkey@g-cipher.net" "$@"
