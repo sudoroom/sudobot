@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-var set = require('settings.js');
+const console = require('console');
+var set = require(__dirname + '/settings.js');
 var Client = require('irc').Client;
 var client = new Client('irc.freenode.net', 'sudobot', {
     channels: [ '#sudoroom' ],
@@ -9,6 +10,7 @@ var client = new Client('irc.freenode.net', 'sudobot', {
     realName: 'sudobot',
     password: set.password,
     sasl: true,
+    debug: true,
     autoConnect: false
 });
 var minimist = require('minimist');
