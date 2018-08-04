@@ -30,6 +30,10 @@ client.addListener('message#sudoroom', function (from, message) {
         // this does not work :) say('/kick ' + from);
         client.send('KICK', '#sudoroom', from);
     }
+    if (/^This.channel.has.been.hacked.by.Australia\s+/.test(message)) {
+        // this does not work :) say('/kick ' + from);
+        client.send('KICK', '#sudoroom', from);
+    }
     if (/^!say\s+/.test(message)) {
         var argv = minimist(message.split(/\s+/).slice(1));
         var args = [];
