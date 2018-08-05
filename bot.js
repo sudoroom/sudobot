@@ -28,11 +28,7 @@ function say (msg) {
 }
 
 client.addListener('message#sudoroom', function (from, message) {
-    if (/^With.our.IRC.ad.service.you.can.reach.a.global.audience\s+/.test(message)) {
-        // this does not work :) say('/kick ' + from);
-        client.send('KICK', '#sudoroom', from);
-    }
-    if (/^This.channel.has.been.hacked.by.Australia\s+/.test(message)) {
+    if (/^....ATTN:.This.channel.has.moved\s+/.test(message)) {
         // this does not work :) say('/kick ' + from);
         client.send('KICK', '#sudoroom', from);
     }
