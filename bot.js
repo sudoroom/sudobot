@@ -9,9 +9,14 @@ var client = new Client('irc.freenode.net', 'sudobot', {
     userName: 'sudobot',
     realName: 'sudobot',
     password: set.password,
-    sasl: true,
+    port: 7000,
     debug: true,
     autoConnect: false
+    secure: true,
+    selfSigned: true,
+    certExpired: true,
+    sasl: true,
+    stripColors: true,
 });
 var minimist = require('minimist');
 
