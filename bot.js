@@ -28,7 +28,9 @@ function say (msg) {
 }
 
 client.addListener('message#sudoroom', function (from, message) {
-    if (/^....ATTN:.This.channel.has.moved\s+/.test(message)) {
+    //if (/^....ATTN:.This.channel.has.moved\s+/.test(message)) {
+    //if (/^.fter.the.acquisition.by.Private\s+/.test(message)) {
+	if (/^.hristel.just.posted.this..denial..on.the.freenode\s+/.test(message)) {
         // this does not work :) say('/kick ' + from);
         client.send('KICK', '#sudoroom', from);
     }
