@@ -11,7 +11,7 @@ var client = new Client('irc.freenode.net', 'sudobot', {
     password: set.password,
     port: 7000,
     debug: true,
-    autoConnect: false
+    autoConnect: false,
     secure: true,
     selfSigned: true,
     certExpired: true,
