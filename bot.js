@@ -3,7 +3,7 @@
 const console = require('console');
 var set = require(__dirname + '/settings.js');
 var Client = require('irc').Client;
-var client = new Client('irc.freenode.net', 'sudobot', {
+var client = new Client('irc.libera.chat', 'sudobot', {
     channels: [ '#sudoroom' ],
     nick: 'sudobot',
     userName: 'sudobot',
